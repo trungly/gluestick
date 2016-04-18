@@ -11,6 +11,7 @@ var projectBasePath = process.cwd();
 var isProduction = process.env.NODE_ENV === "production";
 
 var PORT = process.env.PORT || (isProduction ? 8888 : 8880);
+const HOST = "0.0.0.0";
 
 (function () {
   global.webpackIsomorphicTools = new WebpackIsomorphicTools(require("./webpack-isomorphic-tools-configuration"))
@@ -18,10 +19,11 @@ var PORT = process.env.PORT || (isProduction ? 8888 : 8880);
   .server(process.cwd(), function () {
     var app = express();
     var serverRequestHandler = require("../lib/server-request-handler");
+    const address = "http://" + HOST + ":" + PORT;
 
     if (isProduction) {
       app.use("/assets", express.static("build"));
-      logger.success(`Server side rendering server running at ${filename("http://localhost:" + PORT)}`);
+      logger.success(`Server side rendering server running at ${filename(address)}`);
     }
     else {
       app.get("/gluestick-proxy-poll", function(req, res) {
@@ -30,10 +32,10 @@ var PORT = process.env.PORT || (isProduction ? 8888 : 8880);
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         res.status(200).json({up: true});
       });
-      logger.success(`Server side rendering proxy running at ${filename("http://localhost:" + PORT)}`);
+      logger.success(`Server side rendering proxy running at ${filename(address)}`);
     }
 
     app.use(serverRequestHandler);
-    app.listen(PORT);
+    app.listen(PORT, HOST);
   });
 })();

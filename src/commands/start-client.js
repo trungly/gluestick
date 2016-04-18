@@ -20,6 +20,7 @@ var PORT = 8888;
 var OUTPUT_PATH = path.join(process.cwd(), "build");
 var OUTPUT_FILE = "main-bundle.js";
 var PUBLIC_PATH = assetPath;
+const HOST = "0.0.0.0";
 
 var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('../lib/webpack-isomorphic-tools-configuration'))
   .development(process.env.NODE_ENV !== "production");
@@ -111,7 +112,7 @@ module.exports = function (buildOnly) {
       publicPath: PUBLIC_PATH
     }));
     app.use(require("webpack-hot-middleware")(compiler));
-    app.use(proxy("localhost:8880", {
+    app.use(proxy(`${HOST}:8880`, {
       forwardPath: function (req, res) {
         return require("url").parse(req.url).path;
       },
@@ -126,13 +127,13 @@ module.exports = function (buildOnly) {
         next(err);
       }
     });
-    app.listen(PORT, "localhost", function (error) {
+    app.listen(PORT, HOST, function (error) {
       if (error) {
-        console.log(error);
+        logger.error(error);
         return;
       }
 
-      logger.success("Server running on http://localhost:" + PORT);
+      logger.success(`Server running on http://${HOST}:${PORT}`);
     });
   }
   else {
