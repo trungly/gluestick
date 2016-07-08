@@ -19,7 +19,7 @@ const { additionalLoaders, additionalPreLoaders, additionalAliases } = require("
 const userExtensions = [];
 [...additionalLoaders, ...additionalPreLoaders].forEach((loader) => {
   // Bail out when a test regexp has been supplied.
-  if (loader.test && toString.call(loader.test) === "[object RegExp]") { return; }
+  if (loader.test) { return; }
 
   // If someone wants to include a custom .js loader, we do not want the isomorphic tools to treat it as an asset
   // because .js imports are a native part of how node works. We do want webpack to receive the loader though.

@@ -61,6 +61,8 @@ configEnvVariables.forEach((v) => {
   exposedEnvironmentVariables[v] = JSON.stringify(process.env[v]);
 });
 
+console.log(additionalLoaders);
+
 const compiler = webpack({
   context: process.cwd(),
   devtool: isProduction ? null : "cheap-module-eval-source-map",
@@ -150,4 +152,3 @@ module.exports = function (buildOnly) {
     });
   }
 };
-

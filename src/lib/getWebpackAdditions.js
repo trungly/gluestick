@@ -22,8 +22,7 @@ import logger from "./cliLogger";
  */
 function prepareUserAdditionsForWebpack (additions) {
   return additions.map((addition) => {
-    const test = addition.test && toString.call(addition.test) === "[object RegExp]" ?
-      addition.test : WebpackIsomorphicToolsPlugin.regular_expression(addition.extensions);
+    const test = addition.test;
     const webpackAddition = {
       loader: addition.loader,
       test: test
@@ -81,4 +80,3 @@ export default function (isomorphic=false) {
 
   return userAdditions;
 }
-
